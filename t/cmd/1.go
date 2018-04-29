@@ -16,7 +16,6 @@ func worker(id int, jobs <-chan int, results chan<- int) {
 		fmt.Println("worker", id, "processing job", j)
 		time.Sleep(time.Second)
 		results <- j
-
 	}
 }
 

@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	worksLimit = 8
+	worksLimit = 100
 )
 
 type wokers struct {
