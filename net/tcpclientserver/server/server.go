@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"runtime"
 	"strconv"
 	"time"
 )
@@ -27,8 +28,9 @@ func socketServer(port int) {
 			continue
 		}
 		go handler(conn)
-		go Writer(conn)
+		Writer(conn)
 	}
+
 }
 
 func Writer(conn net.Conn) {
@@ -37,13 +39,15 @@ func Writer(conn net.Conn) {
 	var i int
 	for {
 		i++
-		_, err := w.Write([]byte(Message + ":" + strconv.Itoa(i)))
+		myPong := Message + ":" + strconv.Itoa(i)
+		_, err := w.Write([]byte(myPong))
 		if err != nil {
 			break
 		}
 		w.Flush()
-		// fmt.Println("Write is done", n)
-		// time.Sleep(time.Second)
+		fmt.Println("send:", myPong)
+		time.Sleep(time.Second)
+		runtime.Gosched()
 	}
 }
 

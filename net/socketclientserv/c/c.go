@@ -5,12 +5,10 @@ import (
 	"net"
 	"strconv"
 	"strings"
-	"time"
 )
 
 const (
-	message       = "Ping"
-	StopCharacter = "\r\n\r\n"
+	message = "Ping"
 )
 
 func SocketClient(ip string, port int) {
@@ -24,25 +22,18 @@ func SocketClient(ip string, port int) {
 	}
 
 	for {
-		time.Sleep(time.Second * 1)
 		conn.Write([]byte(message))
-		// conn.Write([]byte(StopCharacter))
 		log.Printf("Send: %s", message)
-
 		buff := make([]byte, 1024)
 		n, _ := conn.Read(buff)
 		log.Printf("Receive: %s", buff[:n])
 	}
-
 }
 
 func main() {
-
 	var (
 		ip   = "127.0.0.1"
 		port = 3333
 	)
-
 	SocketClient(ip, port)
-
 }
