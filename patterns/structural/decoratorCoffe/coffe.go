@@ -28,31 +28,31 @@ func (g *coffeGreen) Cost() uint {
 }
 
 type sugar struct {
-	parent Costing
+	parent *Costing
 }
 
 func NewSugar(cmp Costing) Costing {
-	return &sugar{
-		parent: cmp,
+	return sugar{
+		parent: &cmp,
 	}
 }
 
 func (g sugar) Cost() uint {
-	return g.parent.Cost() + 15
+	return (*g.parent).Cost() + 15
 }
 
 type milk struct {
-	parent Costing
+	parent *Costing
 }
 
 func NewMilk(cmp Costing) Costing {
-	return &milk{
-		parent: cmp,
+	return milk{
+		parent: &cmp,
 	}
 }
 
 func (g milk) Cost() uint {
-	return g.parent.Cost() + 15
+	return (*g.parent).Cost() + 15
 }
 
 func main() {
