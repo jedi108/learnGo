@@ -26,6 +26,7 @@ func Writer(conn net.Conn) {
 	for {
 		i++
 		time.Sleep(time.Second * 3)
+		fmt.Scanln()
 		_, err := conn.Write([]byte(message + strconv.Itoa(i)))
 		if err != nil {
 			fmt.Println("err: ", err)

@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const (
@@ -27,6 +29,8 @@ func SocketClient(ip string, port int) {
 		buff := make([]byte, 1024)
 		n, _ := conn.Read(buff)
 		log.Printf("Receive: %s", buff[:n])
+		time.Sleep(time.Second * 1)
+		fmt.Scanln()
 	}
 }
 

@@ -2,16 +2,17 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"log"
 	"net"
-	"os"
 	"strconv"
 	"strings"
 )
 
 const (
 	Message       = "Pong"
+	Message2      = "Pong222"
 	StopCharacter = "\r\n\r\n"
 )
 
@@ -21,14 +22,14 @@ func SocketServer(port int) {
 	defer listen.Close()
 	if err != nil {
 		log.Fatalf("Socket listen port %d failed,%s", port, err)
-		os.Exit(1)
+		// os.Exit(1)
 	}
 	log.Printf("Begin listen port: %d", port)
 
 	for {
 		conn, err := listen.Accept()
 		if err != nil {
-			log.Fatalln(err)
+			fmt.Println("reset connection........", err)
 			continue
 		}
 		go handler(conn)
@@ -37,7 +38,7 @@ func SocketServer(port int) {
 }
 
 func handler(conn net.Conn) {
-
+	fmt.Println("New connection........")
 	defer conn.Close()
 
 	var (
@@ -48,8 +49,10 @@ func handler(conn net.Conn) {
 
 	// ILOOP:
 	for {
+		log.Println("Start read....")
 		n, err := r.Read(buf)
 		data := string(buf[:n])
+		log.Println("Read from buffer complite......")
 
 		switch err {
 		case io.EOF:
@@ -58,13 +61,17 @@ func handler(conn net.Conn) {
 		case nil:
 			log.Println("receive:", data)
 		default:
-			log.Fatalf("Receive data failed:%s", err)
+			log.Printf("Receive data failed:%s\n", err)
 			return
 		}
 
 		w.Write([]byte(Message))
 		w.Flush()
 		log.Printf("Send: %s", Message)
+
+		w.Write([]byte(Message2))
+		w.Flush()
+		log.Printf("Send: %s", Message2)
 
 	}
 

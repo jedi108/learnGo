@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	Message = "Pong"
+	Message  = "Pong"
+	Message2 = "Pong222"
 )
 
 func socketServer(port int) {
@@ -72,7 +73,8 @@ iLOOP:
 			return
 		}
 	}
-	w.Write([]byte(Message))
+	// w.Write([]byte(Message))
+	w.Write([]byte(Message2))
 	w.Flush()
 	fmt.Println(Message)
 }
