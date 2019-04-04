@@ -8,9 +8,8 @@ import (
 func merge3(c1 chan int, c2 chan int) (out chan int) {
 	out = make(chan int)
 	var (
-		newFanIn = func() (instance func(in <-chan int), mergedChannel chan int) {
+		newFanIN = func(mergedChannel chan<- int) (instance func(in <-chan int)) {
 			wg := new(sync.WaitGroup)
-			mergedChannel = make(chan int)
 			go func() {
 				wg.Wait()
 				close(mergedChannel)
@@ -24,7 +23,7 @@ func merge3(c1 chan int, c2 chan int) (out chan int) {
 					}
 					wg.Done()
 				}()
-			}, mergedChannel
+			}
 		}
 
 		sortAndSend = func(inputValue int, output chan<- int, buff *int) {
@@ -48,13 +47,14 @@ func merge3(c1 chan int, c2 chan int) (out chan int) {
 			close(outer)
 		}
 
-		merger, mergedChannel = newFanIn()
+		mergedChannel = make(chan int)
+		merger        = newFanIN(mergedChannel)
 	)
 
 	merger(c1)
 	merger(c2)
 	//merger(c3)
-	//merger(c4) -- for mor in channels
+	//merger(c4) -- for more input channels
 
 	//-- simple sort
 	go sortReadWrite(mergedChannel, out)
@@ -187,7 +187,7 @@ func send(s []int) chan int {
 }
 
 func main() {
-	s1 := []int{1, 2, 3, 10, 11}
+	s1 := []int{1, 2, 3, 10}
 	s2 := []int{2, 5, 6, 7, 8}
 
 	c1 := send(s1)
