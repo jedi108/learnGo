@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pgconfig
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: ordb
+  POSTGRES_USER: objectrocket
+  POSTGRES_PASSWORD: orkb123
