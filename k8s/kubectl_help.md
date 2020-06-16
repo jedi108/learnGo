@@ -7,9 +7,11 @@ kubectl config view
 kubectl get pod,svc -n kube-system  
 kubectl get componentstatus
 kubectl cluster-info
+kubectl cluster-info | grep dashboard
 
 ### set namespace
 kubectl config set-context --current --namespace=default
+kubectl config set-context --current --namespace=site
 
 ### problems urls
 https://issue.life/questions/52916548  
@@ -36,23 +38,37 @@ minikube addons disable metrics-server
 kubectl label node node2 node.role.kubernetes.io/worker= //- label: worker
 
 ### logs
-Get the pod status, Command - 
+##### Get the pod status, Command - 
 kubectl get pods
 
-Describe pod to have further look - 
-kubectl describe pod "pod-name" The last few lines of output gives you events and where your deployment failed
+##### Describe pod to have further look - 
+kubectl describe pod "pod-name" 
+###### The last few lines of output gives you events and where your deployment failed
 
-Get logs for more details - 
+#### Get logs for more details - 
 kubectl logs "pod-name"
+kubectl logs mypod --previous
 
-Get container logs - 
-kubectl logs "pod-name" -c "container-name" Get the container name from the output of describe pod command
-If your container is up, you can use the 
+#### Get container logs - 
+kubectl logs "pod-name" -c "container-name" 
+##### Get the container name from the output of describe pod command
+##### If your container is up, you can use the 
 
 kubectl exec -it command
-to further analyse the container
+#### to further analyse the container
 
 ####
-kubectl get cm coredns -n kube-system -o yaml
+kubectl get cm coredns -n kube-system -o yaml 
 kubectl exec -it nsqlookup-nsqlookupd-0 sh
 hostname -f
+
+#### show all labels
+kubectl get po --show-labels
+
+#### show only labels
+kubectl get po -L creation_method,env
+
+#### get full info
+kubectl get po kubia-zxzij -o yaml
+
+##### explain
