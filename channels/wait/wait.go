@@ -22,7 +22,7 @@ func main() {
 	go func() {
 		// ... выполняем что-нибудь
 		fmt.Println("Working")
-		time.Sleep(time.Second * 5)
+		time.Sleep(time.Second * 1)
 		close(c)
 		fmt.Println("Close goroutines")
 	}()
@@ -31,4 +31,5 @@ func main() {
 	<-c
 
 	fmt.Println("Done")
+	time.Sleep(time.Second * 2)
 }
