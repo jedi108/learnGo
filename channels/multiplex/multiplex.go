@@ -5,25 +5,26 @@ import (
 )
 
 func main() {
-	channelCh := make(chan struct{})
+	stopCh := make(chan struct{})
 	dataCh := make(chan int)
 
-	go func(channelCh chan struct{}, dataCh chan int) {
+	go func(channelCh <-chan struct{}, dataCh chan<- int) {
 		val := 0
 		for {
 			select {
 			case <-channelCh:
+				close(dataCh)
 				return
 			case dataCh <- val:
 				val++
 			}
 		}
-	}(channelCh, dataCh)
+	}(stopCh, dataCh)
 
 	for curval := range dataCh {
 		fmt.Println("read", curval)
-		if curval > 3 {
-			channelCh <- struct{}{}
+		if curval > 10 {
+			stopCh <- struct{}{}
 			break
 		}
 	}
